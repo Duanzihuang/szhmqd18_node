@@ -5,6 +5,9 @@ const path = require('path')
 //2.0 创建app
 const app = express()
 
+//node中处理静态资源
+app.use(express.static(path.join(__dirname,"statics")))
+
 //3.0 集成路由中间件
 const accountRouter = require(path.join(__dirname,"./routers/accountRouter.js"))
 app.use('/account',accountRouter)
