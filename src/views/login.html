@@ -35,7 +35,7 @@
                                 <input type="text" class="form-control" name="vcode" id="vcodeId" placeholder="请输入验证码">
                             </div>
                             <div class="col-sm-3">
-                                <img id="vcodeimg">
+                                <img id="vcodeimgId" src="/account/vcode">
                             </div>
                         </div>
                         <div class="form-group">
@@ -53,4 +53,10 @@
             </div>
     </div>
 </body>
+<script>
+    $("#vcodeimgId").click(function(){
+        // alert("1111111111")
+        this.src = "/account/vcode?random="+Math.random()
+    })
+</script>
 </html>
