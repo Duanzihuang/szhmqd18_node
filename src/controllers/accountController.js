@@ -22,7 +22,8 @@ exports.getImageVcode = (req, res) => {
   //1.利用一个第三方的包生成 一张带数字的图片
   const random = parseInt(Math.random() * 9000 + 1000);
 
-  //2.存起来?
+  //2.存起来?，存储到session中去了
+  req.session.vcode = random
 
   var p = new captchapng(80, 30, random); // width,height,numeric captcha
   p.color(0, 0, 0, 0); // First color: background (red, green, blue, alpha)
@@ -91,4 +92,45 @@ exports.register = (req,res) => {
       }
     })
   });
+}
+
+/**
+ * 暴露出一个方法，该方法处理具体的登录请求
+ * status : 0 成功
+ *          1 验证码错误
+ *          2 用户名或是密码错误
+ */
+exports.login = (req,res)=>{
+  const result = {status:0,message:'登录成功'}
+  //1.获取到请求体中的内容
+  const {username,password,vcode} = req.body
+
+  //2.验证验证码
+  if(vcode != req.session.vcode){
+    result.status = 1
+    result.message = "验证码错误!"
+
+    res.json(result)
+
+    return
+  }
+
+  //3.验证用户名和密码
+  //2.1 node连接到mongodb服务端
+  MongoClient.connect(url, {useNewUrlParser: true},function(err, client) {
+    const db = client.db(dbName);
+
+    //获取集合，进行操作
+    const collection = db.collection('accountInfo');
+
+    collection.findOne({username,password},(err,doc)=>{
+      if(doc == null){//没查询到
+        result.status = 2
+        result.message = "用户名或密码错误"
+      }
+
+      client.close()
+      res.json(result)
+    })
+  })
 }

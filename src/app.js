@@ -2,6 +2,7 @@
 const express = require('express')
 const path = require('path')
 const bodyParser = require('body-parser')
+const session = require('express-session')
 
 //2.0 创建app
 const app = express()
@@ -13,6 +14,8 @@ app.use(express.static(path.join(__dirname,"statics")))
 app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
+
+app.use(session({ secret: 'keyboard cat',resave:true,saveUninitialized:true, cookie: { maxAge: 10 * 60000 }}))
 
 //3.0 集成路由中间件
 const accountRouter = require(path.join(__dirname,"./routers/accountRouter.js"))

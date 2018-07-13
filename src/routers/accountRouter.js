@@ -20,5 +20,8 @@ accountRouter.get('/register',accountCTRL.getRegisterPage)
 //处理注册请求
 accountRouter.post('/register',accountCTRL.register)
 
+//处理登录请求
+accountRouter.post('/login',accountCTRL.login)
+
 //导出路由模块(路由中间件)
 module.exports = accountRouter
