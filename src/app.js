@@ -17,9 +17,11 @@ app.use(bodyParser.json())
 
 app.use(session({ secret: 'keyboard cat',resave:true,saveUninitialized:true, cookie: { maxAge: 10 * 60000 }}))
 
-//3.0 集成路由中间件
+//3.0 集成路由中间件【路由中间件写在所有中间件的后面】
 const accountRouter = require(path.join(__dirname,"./routers/accountRouter.js"))
+const studentManagerRouter = require(path.join(__dirname,"./routers/studentManagerRouter.js"))
 app.use('/account',accountRouter)
+app.use('/studentmanager',studentManagerRouter)
 
 //4.0 开启
 app.listen(3000,'127.0.0.1',err=>{
