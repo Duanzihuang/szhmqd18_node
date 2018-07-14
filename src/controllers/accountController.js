@@ -101,8 +101,21 @@ exports.login = (req,res)=>{
     if(doc == null){//没查询到
       result.status = 2
       result.message = "用户名或密码错误"
+    }else{
+      req.session.loginedName = username
     }
     
     res.json(result)
   })
+}
+
+/**
+ * 暴露出一个方法，该方法处理具体的登出请求
+ */
+exports.logout = (req,res) => {
+  //1.清空session中的用户名
+  req.session.loginedName = null
+
+  //2.通过响应的形式，跳转到登录页面
+  res.send('<script>location.href="/account/login"</script>')
 }

@@ -23,5 +23,8 @@ accountRouter.post('/register',accountCTRL.register)
 //处理登录请求
 accountRouter.post('/login',accountCTRL.login)
 
+//处理登出请求
+accountRouter.get('/logout',accountCTRL.logout)
+
 //导出路由模块(路由中间件)
 module.exports = accountRouter

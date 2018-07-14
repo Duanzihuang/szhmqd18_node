@@ -10,7 +10,7 @@ exports.getStudentListPage = (req,res) => {
     
     //2.调用databasetool.js的方法
     databasetool.findList('studentInfo',{name:{$regex:keyword}},(err,docs)=>{
-        xtpl.renderFile(path.join(__dirname,"../views/list.html"),{studentList:docs,keyword},(err,content)=>{
+        xtpl.renderFile(path.join(__dirname,"../views/list.html"),{studentList:docs,keyword,loginedName:req.session.loginedName},(err,content)=>{
             res.send(content)
         })
     })
@@ -20,7 +20,7 @@ exports.getStudentListPage = (req,res) => {
  * 暴露出去，获取新增页面的方法
  */
 exports.getAddStudentPage = (req,res) =>{
-    xtpl.renderFile(path.join(__dirname,"../views/add.html"),{},(err,content)=>{
+    xtpl.renderFile(path.join(__dirname,"../views/add.html"),{loginedName:req.session.loginedName},(err,content)=>{
         res.send(content)
     })
 }
@@ -45,7 +45,7 @@ exports.getEditStudentPage = (req,res)=>{
     const _id = databasetool.ObjectId(req.params.studentId)
 
     databasetool.findOne('studentInfo',{_id},(err,doc)=>{
-        xtpl.renderFile(path.join(__dirname,"../views/edit.html"),{studentInfo:doc},(err,content)=>{
+        xtpl.renderFile(path.join(__dirname,"../views/edit.html"),{studentInfo:doc,loginedName:req.session.loginedName},(err,content)=>{
             res.send(content)
         })
     })

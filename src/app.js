@@ -17,6 +17,21 @@ app.use(bodyParser.json())
 
 app.use(session({ secret: 'keyboard cat',resave:true,saveUninitialized:true, cookie: { maxAge: 10 * 60000 }}))
 
+//进行请求的拦截
+app.all('*',(req,res,next)=>{
+    if(req.url.includes('account')){
+        next()
+    }else{
+        //判断是否登录过，如果登录过 next()，如果没有登录过，让它跳转到登录页面
+        if(!req.session.loginedName){//没有登录过
+            res.send('<script>alert("您还没有登录，请先登录");location.href="/account/login"</script>')
+            return
+        }
+
+        next()
+    }
+})
+
 //3.0 集成路由中间件【路由中间件写在所有中间件的后面】
 const accountRouter = require(path.join(__dirname,"./routers/accountRouter.js"))
 const studentManagerRouter = require(path.join(__dirname,"./routers/studentManagerRouter.js"))
