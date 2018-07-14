@@ -22,4 +22,7 @@ studentManagerRouter.get('/edit/:studentId',studentManagerCTRL.getEditStudentPag
 //修改学生信息
 studentManagerRouter.post('/edit/:studentId',studentManagerCTRL.editStudent)
 
+//删除学生信息
+studentManagerRouter.get('/delete/:studentId',studentManagerCTRL.deleteStudent)
+
 module.exports = studentManagerRouter

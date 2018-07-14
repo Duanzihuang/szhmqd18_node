@@ -66,3 +66,20 @@ exports.editStudent = (req,res) => {
         }
     })
 }
+
+/**
+ * 暴露出去，删除学生的方法
+ */
+exports.deleteStudent = (req,res) => {
+    //获取传递过来的参数
+    const _id = databasetool.ObjectId(req.params.studentId)
+
+    //调用databasetool的删除一个的方法
+    databasetool.deleteOne('studentInfo',{_id},(err,result)=>{
+        if(result == null) {//失败
+            res.send('<script>alert("删除失败")</script>')
+        }else {
+            res.send('<script>location.href = "/studentmanager/list"</script>')
+        }
+    })
+}

@@ -123,3 +123,21 @@ exports.insertOne = (collectionName,params,callback) => {
         })
     })
  }
+
+  /**
+  * 暴露出去的一个通用的删除一条文档的方法，这个方法是给所有控制器用的
+  * 
+  * 参数1：要操作的集合名称
+  * 参数2：要操作的数据
+  * 参数3：回调函数，通过回调函数，把操作数据库的结果(成功或是失败)传递给调用它的控制器
+  */
+ exports.deleteOne = (collectionName,params,callback) => {
+    //1.获取到要操作的集合
+    getCollection(collectionName,(client,collection)=>{
+        //2.删除
+        collection.deleteOne(params,(err,result)=>{
+            //3.通过回调，将删除之后的结果，返回给调用它的控制器
+            callback(err,result)
+        })
+    })
+ }
