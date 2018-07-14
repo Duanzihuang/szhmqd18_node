@@ -1,10 +1,29 @@
 const MongoClient = require('mongodb').MongoClient;
+const ObjectId = require('mongodb').ObjectId
+
+exports.ObjectId = ObjectId
 
 // Connection URL
 const url = 'mongodb://localhost:27017';
  
 // Database Name
 const dbName = 'szhmqd18';
+
+/**
+ * 这是抽取出来的方法，用来获取集合 
+ */
+const getCollection = (collectionName,callback) => {
+    //1.连接
+    MongoClient.connect(url, {useNewUrlParser: true},function(err, client) {
+        const db = client.db(dbName);
+    
+        //获取集合，进行操作
+        const collection = db.collection(collectionName);
+
+        //通过回调
+        callback(client,collection)
+    })
+}
 
 /**
  * 这个模块是承上启下的，它里面暴露给控制器调用的方法，应该是通用
@@ -83,4 +102,24 @@ exports.insertOne = (collectionName,params,callback) => {
             callback(err,docs)
         })
      })
+ }
+
+  /**
+  * 暴露出去的一个通用的更改一条文档的方法，这个方法是给所有控制器用的
+  * 
+  * 参数1：要操作的集合名称
+  * 参数2：条件
+  * 参数3：要更改成的值
+  * 参数4：回调函数，通过回调函数，把操作数据库的结果(成功或是失败)传递给调用它的控制器
+  */
+ exports.updateOne = (collectionName,condition,params,callback) => {
+    //1.获取到要操作的集合
+    getCollection(collectionName,(client,collection)=>{
+        //2.修改
+        collection.updateOne(condition,{$set:params},(err,result)=>{
+            client.close()
+            //3.通过回调，将修改之后的结果返回给控制器
+            callback(err,result)
+        })
+    })
  }

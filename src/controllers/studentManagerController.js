@@ -37,3 +37,32 @@ exports.addStudent = (req,res) => {
         }
     })
 }
+
+/**
+ * 暴露出去，获取修改学生的页面
+ */
+exports.getEditStudentPage = (req,res)=>{
+    const _id = databasetool.ObjectId(req.params.studentId)
+
+    databasetool.findOne('studentInfo',{_id},(err,doc)=>{
+        xtpl.renderFile(path.join(__dirname,"../views/edit.html"),{studentInfo:doc},(err,content)=>{
+            res.send(content)
+        })
+    })
+}
+
+/**
+ * 暴露出去，修改学生的方法
+ */
+exports.editStudent = (req,res) => {
+    //获取传递过来的参数
+    const _id = databasetool.ObjectId(req.params.studentId)
+    
+    databasetool.updateOne('studentInfo',{_id},req.body,(err,result)=>{
+        if(result == null) {//失败
+            res.send('<script>alert("修改失败")</script>')
+        }else {
+            res.send('<script>location.href = "/studentmanager/list"</script>')
+        }
+    })
+}
