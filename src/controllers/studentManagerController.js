@@ -15,3 +15,25 @@ exports.getStudentListPage = (req,res) => {
         })
     })
 }
+
+/**
+ * 暴露出去，获取新增页面的方法
+ */
+exports.getAddStudentPage = (req,res) =>{
+    xtpl.renderFile(path.join(__dirname,"../views/add.html"),{},(err,content)=>{
+        res.send(content)
+    })
+}
+
+/**
+ * 暴露出去，获取新增学生方法
+ */
+exports.addStudent = (req,res) => {
+    databasetool.insertOne('studentInfo',req.body,(err,result)=>{
+        if(result == null) {//失败
+            res.send('<script>alert("插入失败")</script>')
+        }else {
+            res.send('<script>location.href = "/studentmanager/list"</script>')
+        }
+    })
+}

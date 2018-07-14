@@ -10,4 +10,10 @@ const studentManagerCTRL = require(path.join(__dirname,"../controllers/studentMa
 //获取学生列表页面
 studentManagerRouter.get('/list',studentManagerCTRL.getStudentListPage)
 
+//获取新增页面
+studentManagerRouter.get('/add',studentManagerCTRL.getAddStudentPage)
+
+//新增学生信息
+studentManagerRouter.post('/add',studentManagerCTRL.addStudent)
+
 module.exports = studentManagerRouter
